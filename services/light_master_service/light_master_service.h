@@ -18,9 +18,15 @@
 #define DEFAULT_YELLOW_DURATION         5
 #define DEFAULT_NONE_COLOR_DURATION     10
 
-#define DEFAULT_SLAVE_DISCONNECTED_TIMEOUT 180 //sec ?
+#define DEFAULT_SLAVE_DISCONNECTED_TIMEOUT 60 //sec ?
+
+#define MAX_TIME_RETRY_CTRL_SLAVE       20
 
 typedef void (*control_light_if)(LIGHT_VALUE color);
+
+typedef struct{
+    void (*slave_change_connected_stt)(uint8_t id, uint8_t stt, void* arg);
+}light_master_call_back_t;
 
 typedef struct {
     light_slv_info_t m_info;
@@ -43,6 +49,10 @@ typedef struct{
 
     sm_mb_master_t* m_mb_master;
     control_light_if m_light_ctrl_if;
+
+    light_master_call_back_t m_cb;
+    void* m_cb_arg;
+
 }light_master_t;
 
 
@@ -57,6 +67,8 @@ int8_t light_master_set_sync_period(light_master_t* _this, uint8_t _period);
 int8_t light_master_set_light_color(light_master_t* _this, LIGHT_VALUE _color);
 
 int8_t light_master_set_light_duration(light_master_t* _this, LIGHT_VALUE _color, uint16_t _duration);
+
+int8_t light_master_reset_group(light_master_t* _this);
 
 slave_data_t* light_get_slave_data(light_master_t* _this, uint8_t _slave_id);
 

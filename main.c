@@ -5,7 +5,6 @@
 #include "light_master_service.h"
 #include "sm_time_utils.h"
 
-
 #define TAG "main"
 #define USB_PORT "/dev/ttyUSB0"
 int g_fd;
@@ -118,8 +117,6 @@ int main() {
         return -1;
     }
 
-//    g_mb_master = sm_mb_master_create(mb_send_if, mb_rcv_if, NULL);
-
     g_light_master = light_master_create(mb_send_if, mb_rcv_if, NULL);
     light_master_set_ctrl_light_if(g_light_master, app_control_light_if);
 
@@ -127,19 +124,4 @@ int main() {
         light_master_process(g_light_master);
     }
 
-    while (1){
-        LOG_INF(TAG, "/******************** STARTING *******************/");
-        LOG_INF(TAG, "Please choose the character for testing !!!!");
-        LOG_INF(TAG, "Choose 'a' to control light !!!");
-        LOG_INF(TAG, "Choose 'b' to set light duration !!!");
-        LOG_INF(TAG, "Choose 'c' to see slave infos !!!");
-
-        LOG_INF(TAG, "Please Enter character for testing !!!");
-        int c = getchar();
-
-        print_help(c);
-        while (getc(stdin) != '\n');
-    }
-
-    return 0;
 }

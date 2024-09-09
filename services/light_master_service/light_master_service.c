@@ -22,9 +22,6 @@ static LIGHT_VALUE get_opposite_color(LIGHT_VALUE _color){
 
 
 static int light_master_control_slave_light(light_master_t * _this, uint8_t _slave_id, LIGHT_VALUE _color){
-    if(!_this)
-        return -1;
-
     uint8_t testId = 0;
     uint16_t testVal = _slave_id;
     testVal = (testVal<<8) | (_color&0xFF);
@@ -40,7 +37,7 @@ static int light_master_control_slave_light(light_master_t * _this, uint8_t _sla
     return 0;
 }
 
-static int light_master_get_slave_data(light_master_t * _this, uint8_t _slave_id){
+static int light_master_read_slave_data(light_master_t * _this, uint8_t _slave_id){
     if(!_this)
         return -1;
 
@@ -70,8 +67,6 @@ static int light_master_get_slave_data(light_master_t * _this, uint8_t _slave_id
 }
 
 static bool light_master_check_same_cycle_slave(light_master_t* _this, uint8_t _slave_id){
-    if(!_this)
-        return false;
 
     switch (_this->m_slave_number) {
         case 1:
@@ -113,8 +108,14 @@ light_master_t *light_master_create(sm_mb_master_send_if _sendIf, sm_mb_master_r
     this->m_light_duration[LIGHT_YELLOW] = DEFAULT_YELLOW_DURATION*1000;
     this->m_light_duration[LIGHT_NONE] = DEFAULT_NONE_COLOR_DURATION*1000;
 
+    elapsed_timer_resetz(&this->m_light_timer, this->m_light_duration[LIGHT_NONE]);
     this->m_current_sync_id = 0;
     this->m_current_light = LIGHT_NONE;
+
+    for(int i = 0; i < this->m_slave_number; i++){
+        this->m_slave_data[i].m_is_connected = true;
+        this->m_slave_data[i].m_retry_connected = 0;
+    }
 
     return this;
 }
@@ -181,6 +182,19 @@ int8_t light_master_set_light_duration(light_master_t* _this, LIGHT_VALUE _color
     return 0;
 }
 
+int8_t light_master_reset_group(light_master_t* _this){
+    _this->m_current_sync_id = 0;
+    _this->m_current_light = LIGHT_NONE;
+    _this->m_current_sync_id = 0;
+    for(int i = 0; i < _this->m_slave_number; i++){
+        _this->m_slave_data[i].m_is_connected = true;
+        _this->m_slave_data[i].m_retry_connected = 0;
+    }
+    elapsed_timer_reset(&_this->m_sync_slave_period);
+    elapsed_timer_resetz(&_this->m_light_timer, _this->m_light_duration[LIGHT_NONE]);
+    return 0;
+}
+
 
 
 slave_data_t* light_get_slave_data(light_master_t* _this, uint8_t _slave_id){
@@ -205,24 +219,47 @@ void light_master_process(light_master_t* _this){
             _this->m_current_sync_id = 0;
         }
 
+        slave_data_t* slave = &_this->m_slave_data[_this->m_current_sync_id];
 
-        if(light_master_get_slave_data(_this, _this->m_current_sync_id) < 0){
+        if(!slave->m_is_connected){
+            if(!elapsed_timer_get_remain(&slave->m_disconnect_timeout)){
+                slave->m_is_connected = false;
+            }else{
+                return;
+            }
+        }
+
+        if(light_master_read_slave_data(_this, _this->m_current_sync_id) < 0){
             LOG_WRN(TAG, "Read slave %d data FAILED", _this->m_current_sync_id);
-            _this->m_slave_data[_this->m_current_sync_id].m_retry_connected++;
+            slave->m_retry_connected++;
+            if(slave->m_retry_connected >= MAXIMUM_SLAVE_NUMBER){
+                slave->m_is_connected = false;
+                elapsed_timer_resetz(&slave->m_disconnect_timeout, DEFAULT_SLAVE_DISCONNECTED_TIMEOUT);
+                if(_this->m_cb.slave_change_connected_stt){
+                    _this->m_cb.slave_change_connected_stt(_this->m_current_sync_id, false, _this->m_cb_arg);
+                }
+            }
             return;
         }
 
-//        LIGHT_VALUE correctColor;
-//        if(light_master_check_same_cycle_slave(_this, _this->m_current_sync_id)){
-//            correctColor = _this->m_current_light;
-//        }else{
-//            correctColor = get_opposite_color(_this->m_current_light);
-//        }
-//
-//        if (_this->m_slave_data[_this->m_current_sync_id].m_info.m_current_light != correctColor){
-//            LOG_INF(TAG, "Slave %d now incorrect light, control it", _this->m_current_sync_id);
-//            light_master_control_slave_light(_this, _this->m_current_sync_id, correctColor);
-//        }
+        if(!slave->m_is_connected){
+            slave->m_is_connected = true;
+            if(_this->m_cb.slave_change_connected_stt){
+                _this->m_cb.slave_change_connected_stt(_this->m_current_sync_id, true, _this->m_cb_arg);
+            }
+        }
+
+        LIGHT_VALUE correctColor;
+        if(light_master_check_same_cycle_slave(_this, _this->m_current_sync_id)){
+            correctColor = _this->m_current_light;
+        }else{
+            correctColor = get_opposite_color(_this->m_current_light);
+        }
+
+        if (slave->m_info.m_current_light != correctColor){
+            LOG_INF(TAG, "Slave %d now incorrect light, control it", _this->m_current_sync_id);
+            light_master_control_slave_light(_this, _this->m_current_sync_id, correctColor);
+        }
     }
 }
 
