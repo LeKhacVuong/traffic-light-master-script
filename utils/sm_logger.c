@@ -15,7 +15,7 @@
 #define WHT   "\x1B[37m"
 #define RESET "\x1B[0m"
 
-static const char *log_level_colors[LOG_LEVEL_NUMBER] = {RED,YEL,GRN,RESET, WHT };
+static const char *log_level_colors[LOG_LEVEL_NUMBER] = {RED, YEL, WHT, RESET, WHT };
 
 static const char *log_level_names[LOG_LEVEL_NUMBER] = {"ERROR","WARN ", "INFO ", "DEBUG", "TRACE" };
 

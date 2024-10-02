@@ -1,0 +1,201 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "mainapp"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt",
+			"services/light_master_service/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 17,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 20,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 12,
+				"parent" : 3
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 6,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -fdiagnostics-color=always"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils/algorithms"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils/timing"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils/unix"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/common/modbus"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/common/modbus/mb_slave"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/common/modbus/mb_master"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/libs/nanoModbus"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/services/light_master_service"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "sdk_utils::@c810615cce0f7acb82dc"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "mb_master::@b12c58d2c8a485810453"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "light_master_sv::@9fc0ad4b77971525e13a"
+		}
+	],
+	"id" : "mainapp::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "utils/libsdk_utils.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "services/light_master_service/liblight_master_sv.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "utils/libsdk_utils.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "common/modbus/mb_master/libmb_master.a",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "mainapp",
+	"nameOnDisk" : "mainapp",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "main.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "services/light_master_service/light_master_service.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}

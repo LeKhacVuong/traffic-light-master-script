@@ -9,9 +9,9 @@ typedef enum LIGHT_VALUE{
     LIGHT_GREEN,
     LIGHT_RED,
     LIGHT_YELLOW,
-    LIGHT_NONE,
-    LIGHT_NUMBER
-}LIGHT_VALUE;
+    LIGHT_NONE_COLOR,
+    LIGHT_COLOR_NUMBER
+}LIGHT_COLOR;
 
 typedef enum LIGHT_STT{
     LIGHT_ACTIVE,
@@ -29,16 +29,25 @@ typedef struct{
     uint32_t m_longitude;
 }light_slv_info_t;
 
-static inline const char* getLightColorString(uint8_t _color){
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\033[93m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
+
+static inline const char* getLightColorString(uint8_t _color) {
     switch (_color) {
         case LIGHT_GREEN:
-            return "GREEN";
+            return GRN "GREEN" WHT;
         case LIGHT_RED:
-            return "RED";
+            return RED "RED" WHT;
         case LIGHT_YELLOW:
-            return "YELLOW";
-        case LIGHT_NONE:
-            return "NONE";;
+            return YEL "YELLOW" WHT;
+        case LIGHT_NONE_COLOR:
+            return WHT "NONE" WHT;
         default:
             return "INVALID";
     }

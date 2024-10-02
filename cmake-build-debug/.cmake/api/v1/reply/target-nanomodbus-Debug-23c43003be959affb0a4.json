@@ -1,0 +1,147 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "libs/nanoModbus/libnanomodbus.a"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"libs/nanoModbus/CMakeLists.txt",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 7,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 6,
+				"parent" : 2
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -std=gnu99 -fdiagnostics-color=always"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils/algorithms"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils/timing"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/utils/unix"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/common/modbus"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/common/modbus/mb_slave"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/common/modbus/mb_master"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/libs/nanoModbus"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/lekhacvuong/Desktop/traffic-light-master-script/services/light_master_service"
+				}
+			],
+			"language" : "C",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "99"
+			},
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"id" : "nanomodbus::@baa76e7140dcce53f676",
+	"name" : "nanomodbus",
+	"nameOnDisk" : "libnanomodbus.a",
+	"paths" : 
+	{
+		"build" : "libs/nanoModbus",
+		"source" : "libs/nanoModbus"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"path" : "libs/nanoModbus/nanomodbus.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "libs/nanoModbus/nanomodbus.c",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

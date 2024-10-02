@@ -10,7 +10,6 @@
 int g_fd;
 light_master_t* g_light_master;
 
-
 int64_t get_tick_count() {
     struct timespec ts;
     int32_t tick = 0U;
@@ -57,7 +56,7 @@ int32_t mb_rcv_if(uint8_t* _buf, int32_t _len, int32_t _timeout, void* _arg){
     return 0;
 }
 
-void app_control_light_if(LIGHT_VALUE _color){
+void app_control_light_if(LIGHT_COLOR _color){
 //    LOG_INF(TAG, "Control master light color to %s", getLightColorString(_color));
 }
 
@@ -117,11 +116,16 @@ int main() {
         return -1;
     }
 
-    g_light_master = light_master_create(mb_send_if, mb_rcv_if, NULL);
-    light_master_set_ctrl_light_if(g_light_master, app_control_light_if);
+    g_light_master = light_master_create(mb_send_if, mb_rcv_if, app_control_light_if, NULL);
+
+    light_master_set_process_mode(g_light_master, PROCESS_MODE_AUTO);
+    light_master_set_slave_flex_duration(g_light_master, 0, 10, 10);
+    light_master_set_slave_flex_duration(g_light_master, 1, 15, 10);
+    light_master_set_slave_flex_duration(g_light_master, 2, 20, 10);
+
+    light_master_set_group_mode(g_light_master, GROUP_MODE_FLEX, 0);
 
     while (1){
         light_master_process(g_light_master);
     }
-
 }
